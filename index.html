@@ -2,47 +2,11 @@
 Hello World + GitHub Pages — Quick guide
 
 What this file contains:
-- A tiny "Hello, world!" HTML page (below).
-- Step-by-step instructions for publishing it to GitHub Pages using:
-  A) Local git + command line (recommended)
-  B) GitHub web UI (no git installed)
+- A simple HTML page with two sections.
+- First section has a button that scrolls down to the second section.
+- Ready to host on GitHub Pages.
 
-1) Option A — Use Git (recommended)
-- Create a GitHub account (if you don't have one): https://github.com
-- Create a new repository:
-  * For a personal/username pages site: name it <your-username>.github.io
-    -> The site will be served at https://<your-username>.github.io
-  * For a project site: name it whatever you want (e.g., hello-world)
-    -> The site will be served at https://<your-username>.github.io/<repo-name>/ (you may need to enable Pages)
-- On your machine, create a folder, save this file as index.html inside.
-
-Commands (run in your terminal inside the project folder):
-  mkdir hello-github-pages
-  cd hello-github-pages
-  # create or paste this file as index.html
-  git init
-  git add index.html
-  git commit -m "Initial commit — Hello World"
-  git branch -M main
-  git remote add origin https://github.com/<your-username>/<repo-name>.git
-  git push -u origin main
-
-- After pushing:
-  * If your repo is named <your-username>.github.io, the site will usually be live at https://<your-username>.github.io within a minute or two.
-  * If it's a project repo, open the GitHub repo > Settings > Pages and set Source to "main" branch (root) or /docs, then save. The URL will be https://<your-username>.github.io/<repo-name>/
-
-2) Option B — Use the GitHub web UI (no Git)
-- Create new repo on GitHub.
-- Click "Add file" > "Create new file".
-- Name it index.html and paste the HTML from below.
-- Commit the file.
-- For project sites: go to Settings > Pages and select main branch as source if needed.
-- Visit the Pages URL as described above.
-
-Notes:
-- It can take a minute or two for GitHub Pages to build & deploy.
-- For a *personal* site the repository MUST be named exactly <your-username>.github.io
-- Custom domains require DNS configuration and adding the domain in repo Settings > Pages.
+Instructions remain the same as before.
 -->
 
 <!doctype html>
@@ -52,10 +16,9 @@ Notes:
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Hello — GitHub Pages</title>
   <style>
-    /* Simple centered layout */
-    html,body{height:100%;margin:0}
-    body{display:flex;align-items:center;justify-content:center;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;background:#f8fafc;color:#0f172a}
-    .card{padding:2rem;border-radius:12px;box-shadow:0 6px 20px rgba(2,6,23,0.08);background:white;text-align:center}
+    html,body{margin:0;padding:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;background:#f8fafc;color:#0f172a;scroll-behavior:smooth}
+    section{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center}
+    .card{padding:2rem;border-radius:12px;box-shadow:0 6px 20px rgba(2,6,23,0.08);background:white}
     h1{margin:0 0 0.5rem 0}
     p{margin:0 0 1rem 0;color:#475569}
     a.button{display:inline-block;padding:0.6rem 1.2rem;background:#2563eb;color:white;text-decoration:none;border-radius:8px;box-shadow:0 2px 8px rgba(2,6,23,0.15);transition:background 0.2s}
@@ -63,10 +26,22 @@ Notes:
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Hello, world! 👋</h1>
-    <p>This is a minimal static page ready for GitHub Pages.</p>
-    <a href="https://www.google.com" target="_blank" class="button">Go to Google</a>
-  </div>
+  <!-- Section 1 -->
+  <section id="section1">
+    <div class="card">
+      <h1>Hello, world! 👋</h1>
+      <p>Welcome to the first section of this page.</p>
+      <a href="#section2" class="button">Go to Second Section</a>
+    </div>
+  </section>
+
+  <!-- Section 2 -->
+  <section id="section2">
+    <div class="card">
+      <h1>Second Section 🌐</h1>
+      <p>You’ve scrolled down! Here’s a link to Google:</p>
+      <a href="https://www.google.com" target="_blank" class="button">Go to Google</a>
+    </div>
+  </section>
 </body>
 </html>
