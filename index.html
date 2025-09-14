@@ -1,121 +1,138 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Our Programs — GitHub Pages</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Programs</title>
   <style>
-    html,body{margin:0;padding:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;background:#f8fafc;color:#0f172a;scroll-behavior:smooth}
-    section{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;max-width:1000px;width:100%;padding:1rem}
-    .card{padding:1rem;border-radius:12px;box-shadow:0 6px 20px rgba(2,6,23,0.08);background:white;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:transform 0.2s;cursor:pointer}
-    .card:hover{transform:translateY(-4px)}
-    .card img{max-width:120px;margin-bottom:1rem;border-radius:8px}
-    h1{margin-bottom:1rem}
-    h2{margin:0.5rem 0;font-size:1.1rem;color:#2563eb}
-    p{margin:0.5rem 0 1rem;color:#475569}
-    a{text-decoration:none;color:inherit}
-    .button{display:inline-block;padding:0.6rem 1.2rem;background:#2563eb;color:white;text-decoration:none;border-radius:8px;box-shadow:0 2px 8px rgba(2,6,23,0.15);transition:background 0.2s}
-    .button:hover{background:#1e40af}
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+      background: linear-gradient(to right, #c3f5d6, #b2e1ff);
+    }
+
+    .programs {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr; /* 4 columns */
+      gap: 20px;
+      padding: 40px;
+      align-items: stretch;
+    }
+
+    /* Bigger card */
+    .choose-class {
+      grid-row: span 2; /* make it taller */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: bold;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      padding: 20px;
+    }
+
+    .program-card {
+      background: #fff;
+      border-radius: 15px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .program-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .program-card img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .program-card h3 {
+      margin: 0;
+      font-size: 18px;
+      color: #333;
+    }
+
+    section {
+      padding: 80px 20px;
+      text-align: center;
+      background: #f9f9f9;
+      margin-bottom: 40px;
+    }
   </style>
 </head>
 <body>
-  <!-- Section 1: Program Grid -->
-  <section id="programs">
-    <div>
-      <h1>OUR PROGRAMS</h1>
-      <div class="grid">
-        <!-- Choose Your Class (not clickable) -->
-        <div class="card">
-          <img src="english-for-kid.jpg" alt="Choose your class">
-          <h2>Choose YOUR CLASS</h2>
-        </div>
-        <!-- English for Kids -->
-        <a href="#kids" class="card">
-          <img src="english-for-kid.jpg" alt="English for Kids">
-          <h2>English for Kids</h2>
-        </a>
-        <!-- English for Teens -->
-        <a href="#teens" class="card">
-          <img src="english-for-kid.jpg" alt="English for Teens">
-          <h2>English for Teens</h2>
-        </a>
-        <!-- English for Adults -->
-        <a href="#adults" class="card">
-          <img src="english-for-kid.jpg" alt="English for Adults">
-          <h2>English for Adults</h2>
-        </a>
-        <!-- TOEFL -->
-        <a href="#toefl" class="card">
-          <img src="english-for-kid.jpg" alt="TOEFL">
-          <h2>TOEFL Preparation</h2>
-        </a>
-        <!-- IELTS -->
-        <a href="#ielts" class="card">
-          <img src="english-for-kid.jpg" alt="IELTS">
-          <h2>IELTS Preparation</h2>
-        </a>
-        <!-- English for Specific Purposes -->
-        <a href="#esp" class="card">
-          <img src="english-for-kid.jpg" alt="English for Specific Purposes">
-          <h2>English for Specific Purposes</h2>
-        </a>
-      </div>
-    </div>
-  </section>
 
-  <!-- Section 2: English for Kids -->
+  <div class="programs">
+    <div class="choose-class">
+      Choose <br> Your <br> Class
+    </div>
+    <div class="program-card" onclick="location.href='#kids'">
+      <img src="english-for-kids.jpg" alt="English for Kids">
+      <h3>English for Kids</h3>
+    </div>
+    <div class="program-card" onclick="location.href='#teens'">
+      <img src="english-for-kids.jpg" alt="English for Teens">
+      <h3>English for Teens</h3>
+    </div>
+    <div class="program-card" onclick="location.href='#adults'">
+      <img src="english-for-kids.jpg" alt="English for Adults">
+      <h3>English for Adults</h3>
+    </div>
+    <div class="program-card" onclick="location.href='#toefl'">
+      <img src="english-for-kids.jpg" alt="TOEFL Preparation">
+      <h3>TOEFL Preparation</h3>
+    </div>
+    <div class="program-card" onclick="location.href='#ielts'">
+      <img src="english-for-kids.jpg" alt="IELTS Preparation">
+      <h3>IELTS Preparation</h3>
+    </div>
+    <div class="program-card" onclick="location.href='#esp'">
+      <img src="english-for-kids.jpg" alt="English for Specific Purposes">
+      <h3>English for Specific Purposes</h3>
+    </div>
+  </div>
+
+  <!-- Sections for details -->
   <section id="kids">
-    <div class="card">
-      <h1>English for Kids</h1>
-      <p>Description about English for Kids program goes here.</p>
-      <a href="#programs" class="button">⬆ Back to Programs</a>
-    </div>
+    <h2>English for Kids</h2>
+    <p>Fun and engaging English classes for children.</p>
   </section>
 
-  <!-- Section 3: English for Teens -->
   <section id="teens">
-    <div class="card">
-      <h1>English for Teens</h1>
-      <p>Description about English for Teens program goes here.</p>
-      <a href="#programs" class="button">⬆ Back to Programs</a>
-    </div>
+    <h2>English for Teens</h2>
+    <p>Improve English skills for school and daily life.</p>
   </section>
 
-  <!-- Section 4: English for Adults -->
   <section id="adults">
-    <div class="card">
-      <h1>English for Adults</h1>
-      <p>Description about English for Adults program goes here.</p>
-      <a href="#programs" class="button">⬆ Back to Programs</a>
-    </div>
+    <h2>English for Adults</h2>
+    <p>Practical English for professional and personal growth.</p>
   </section>
 
-  <!-- Section 5: TOEFL -->
   <section id="toefl">
-    <div class="card">
-      <h1>TOEFL Preparation</h1>
-      <p>Description about TOEFL Preparation program goes here.</p>
-      <a href="#programs" class="button">⬆ Back to Programs</a>
-    </div>
+    <h2>TOEFL Preparation</h2>
+    <p>Get ready for your TOEFL exam with expert guidance.</p>
   </section>
 
-  <!-- Section 6: IELTS -->
   <section id="ielts">
-    <div class="card">
-      <h1>IELTS Preparation</h1>
-      <p>Description about IELTS Preparation program goes here.</p>
-      <a href="#programs" class="button">⬆ Back to Programs</a>
-    </div>
+    <h2>IELTS Preparation</h2>
+    <p>Boost your IELTS score with structured preparation.</p>
   </section>
 
-  <!-- Section 7: ESP -->
   <section id="esp">
-    <div class="card">
-      <h1>English for Specific Purposes</h1>
-      <p>Description about English for Specific Purposes program goes here.</p>
-      <a href="#programs" class="button">⬆ Back to Programs</a>
-    </div>
+    <h2>English for Specific Purposes</h2>
+    <p>Tailored English programs for different professions.</p>
   </section>
+
 </body>
 </html>
