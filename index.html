@@ -1,138 +1,769 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our Programs</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Supervision — English Learning</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet"> -->
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      scroll-behavior: smooth;
-      background: linear-gradient(to right, #c3f5d6, #b2e1ff);
+    :root{
+      --bg-grad: linear-gradient(to right, #c3f5d6, #b2e1ff);
+      --primary:#0f172a; /* slate-900 */
+      --muted:#475569;   /* slate-600 */
+      --accent:#10b981;  /* emerald */
+      --white:#ffffff;
+      --card:#ffffffcc;
+      --ring:#e2e8f0;    /* slate-200 */
+      --circle:#ffffff;
+      --shadow: 0 10px 25px rgba(2,6,23,.08);
+      --radius: 20px;
     }
 
-    .programs {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1fr; /* 4 columns */
-      gap: 20px;
-      padding: 40px;
-      align-items: stretch;
+    *{ box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--primary);
+      background: var(--bg-grad);
+      line-height:1.6;
+      scroll-behavior:smooth;
+      padding-top: 60px;
     }
 
-    /* Bigger card */
-    .choose-class {
-      grid-row: span 2; /* make it taller */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      font-weight: bold;
-      background: #fff;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: center;
-      padding: 20px;
+    /* ---------- Top Nav (frozen) ---------- */
+    .nav{
+      position: fixed; top:0; left:0; right:0; z-index:1000;
+      backdrop-filter: saturate(1.2) blur(8px);
+      background: rgba(255,255,255,.7);
+      border-bottom:1px solid var(--ring);
+    }
+    .nav-inner{
+      max-width: 1200px; margin: 0 auto; padding: 12px 20px;
+      display:flex; align-items:center; gap:16px;
+    }
+    .logo{
+        display: inline-grid;
+        grid-template-columns: auto auto;
+        grid-template-areas:
+            "super accent"
+            ". tagline";
+        align-items: end;
+        font-family: "Poppins", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+        font-weight: 800;
+        font-size: clamp(24px, 2.6vw, 34px);
+        letter-spacing: .2px;
+        line-height: 1;
+    }
+    .logo span{ color: var(--accent); font-weight: 600; }
+    .logo .super   { grid-area: super;  color: var(--primary); }   /* stays black/dark */
+    .logo .accent  { grid-area: accent; color: var(--accent); }    /* green */
+    .logo .tagline{
+        grid-area: tagline;
+        color: var(--muted);
+        font-weight: 400;                          /* thinner than the wordmark */
+        font-size: clamp(10px, 1vw, 14px);       /* smaller text */
+        letter-spacing: .2px;
+        margin-top: 2px;
+        text-transform: lowercase;
+    }
+    .spacer{ flex:1; }
+    .nav a.btn{
+      text-decoration:none; color:var(--primary);
+      padding:10px 14px; border-radius:10px; border:1px solid transparent;
+      transition:.2s ease; font-weight:600;
+    }
+    .nav a.btn:hover{ background:#fff; border-color:var(--ring); box-shadow:var(--shadow); }
+    .nav a.btn.cta{ background:var(--primary); color:#fff; }
+    .nav a.btn.cta:hover{ transform: translateY(-1px); }
+
+    /* Dropdown (Courses) */
+    .nav details.dropdown{ position:relative; display:inline-block; }
+    .nav details.dropdown > summary.btn{ list-style:none; cursor:pointer; }
+    .nav details.dropdown > summary.btn::-webkit-details-marker{ display:none; }
+    .nav details.dropdown > summary.btn::after{ content:" ▾"; font-weight:400; }
+    .nav details.dropdown[open]{ z-index:1100; }
+    .nav details.dropdown .menu{
+        position:absolute; right:0; top:calc(100% + 8px); min-width:200px;
+        background:#fff; border:1px solid var(--ring); border-radius:12px; box-shadow:var(--shadow);
+        padding:8px; display:none;
+    }
+    .nav details.dropdown[open] .menu{ display:block; }
+    .nav details.dropdown .menu a{ display:block; padding:10px 12px; border-radius:8px; text-decoration:none; color:var(--primary); white-space:nowrap; }
+    .nav details.dropdown .menu a:hover{ background:#f8fafc; }
+
+    /* ---------- Generic Containers ---------- */
+    section{ max-width:1200px; margin:0 auto; padding:64px 20px; }
+    .shell{
+      background: var(--card);
+      border:1px solid var(--ring);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: clamp(20px, 4vw, 40px);
     }
 
-    .program-card {
-      background: #fff;
-      border-radius: 15px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      cursor: pointer;
-      transition: transform 0.2s ease;
+    /* ---------- ACHIEVEMENT ---------- */
+    .achv{
+      display:flex; flex-direction:column; gap:28px;
+    }
+    .achv-top{
+      display:flex; gap:22px; align-items:center; justify-content:center; flex-wrap:wrap;
+    }
+    .achv-item{
+      display:grid; place-items:center; gap:8px;
+      width: 130px; aspect-ratio: 1/1; border-radius: 50%;
+      background: var(--circle);
+      border:1px solid var(--ring);
+      box-shadow: var(--shadow);
+    }
+    .achv-item .num{ font-size: clamp(28px, 6vw, 30px); font-weight:800; padding-top: 32px;}
+    .achv-item .label{ color: var(--muted); font-weight:600; font-size:11px; padding-bottom: 22px;}
+
+    .achv-bottom{ text-align:center; font-weight:700; font-size: 18px; }
+    .achv-bottom-bottom{ text-align:center; font-weight:400; font-size: 18px;}
+
+    /* Wavy tagline */
+    .wave-text { display:inline-block; white-space:pre-wrap; }
+    .wave-text .char { display:inline-block; transform: translateY(0); opacity: 0; }
+
+    @keyframes waveUp {
+    0%   { transform: translateY(8px); opacity: 0; }
+    40%  { opacity: 1; }
+    60%  { transform: translateY(-6px); }
+    100% { transform: translateY(0); opacity: 1; } /* <-- stay visible at end */
     }
 
-    .program-card:hover {
-      transform: translateY(-5px);
+    /* ensure final frame sticks */
+    .wave-text.is-visible .char {
+    animation: waveUp 600ms ease-out forwards; /* <-- forwards keeps 100% state */
     }
 
-    .program-card img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 10px;
-      margin-bottom: 10px;
+    /* respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+    .wave-text .char { animation:none !important; opacity:1; }
     }
 
-    .program-card h3 {
-      margin: 0;
-      font-size: 18px;
-      color: #333;
+    /* ---------- COURSES ---------- */
+    .courses{ display:grid; grid-template-columns: 1.2fr 1fr; gap:28px; align-items:stretch; }
+    .courses .left{ background:#fff; border-radius: var(--radius); padding:28px; border:1px solid var(--ring); box-shadow: var(--shadow); }
+    .chips{ display:grid; gap:14px; }
+    .chip{
+      padding:18px 16px; border-radius:16px; color:#0b1220; font-weight:600; border:1px solid var(--ring);
+      background:#e0fbeb; /* default */
+    }
+    .chip:nth-child(2){ background:#e1effe; }
+    .chip:nth-child(3){ background:#fdecc8; }
+
+    /* Image below the description inside course cards */
+    .course-section .left .course-photo{
+    display:block;
+    width:60%;
+    height:auto;
+    margin:16px auto 0;   /* top | left/right | bottom → centers it */
     }
 
-    section {
-      padding: 80px 20px;
-      text-align: center;
-      background: #f9f9f9;
-      margin-bottom: 40px;
+    /* Optional: keep a neat 16:9 crop if your images vary a lot */
+    /* .course-section .left .course-photo{
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    } */
+
+    /* ---------- HOW TO REGISTER ---------- */
+    .steps{ display:flex; flex-direction:column; gap:20px; }
+    .steps .top{ font-weight:700; font-size:clamp(18px, 2.6vw, 22px); }
+    .timeline{
+      position:relative; display:grid; grid-template-columns: repeat(3, 1fr); gap:18px; align-items:start;
+      padding: 26px 10px 6px;
+    }
+    .timeline::before{
+      content:""; position:absolute; top:58px; left:20px; right:20px; height:4px; background:#e8eef6; border-radius:999px;
+    }
+    .node{
+      position:relative; background:#fff; border:1px solid var(--ring); border-radius:18px; padding:16px; box-shadow: var(--shadow); text-align:center;
+    }
+    .node .imgwrap{
+      width:70px; height:70px; margin:-36px auto 10px; border-radius:50%; overflow:hidden; border:4px solid #fff; box-shadow: var(--shadow);
+      background:#f8fafc; display:grid; place-items:center;
+    }
+    .node img{ width:65%; height:65%; object-fit:cover; display:block; }
+    .node .title{ font-weight:800; font-size:18px; margin-top:6px; }
+    .node .desc{ color:var(--muted); font-size:14px; }
+    .node .imgwrap img[alt="fill-form"]{
+        transform: translateX(4px);   /* adjust px as needed */
+    }
+
+    /* Centered CTA under the flow */
+    .flow-cta{
+    display:flex;
+    justify-content:center;
+    margin-top: 22px;         /* space from the timeline */
+    }
+    .flow-cta .anchor-btn{
+    padding: 12px 20px;       /* a bit larger than default */
+    font-size: 16px;
+    }
+    @media (max-width: 600px){
+    .flow-cta .anchor-btn{ width: 100%; text-align: center; }
+    }
+    /* Interactive hover/focus/active for the big CTA button only */
+    .flow-cta .anchor-btn{
+    transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+    }
+
+    .flow-cta .anchor-btn:hover{
+    transform: translateY(-3px) scale(1.02);
+    filter: brightness(1.05);
+    box-shadow: 0 14px 28px rgba(2,6,23,.18), 0 6px 14px rgba(2,6,23,.10);
+    }
+
+    .flow-cta .anchor-btn:active{
+    transform: translateY(-1px) scale(0.99);
+    box-shadow: 0 8px 16px rgba(2,6,23,.14), 0 3px 8px rgba(2,6,23,.10);
+    }
+
+    .flow-cta .anchor-btn:focus-visible{
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(178,225,255,.9), 0 0 0 6px rgba(255,255,255,.9);
+    }
+
+    /* ---------- REVIEW (carousel) ---------- */
+    .review h2{ font-size: clamp(20px, 3.2vw, 28px); margin: 0 0 16px; }
+    .carousel{
+      display:grid; grid-auto-flow: column; grid-auto-columns: min(100%, 700px);
+      gap:18px; overflow-x:auto; padding-bottom:10px; scroll-snap-type:x mandatory;
+    }
+    .slide{ scroll-snap-align:center; background:#fff; border:1px solid var(--ring); border-radius: var(--radius); box-shadow: var(--shadow); padding:20px; display:grid; grid-template-columns: 220px 1fr; gap:18px; }
+    .slide img{ width:100%; height:100%; object-fit:cover; border-radius:14px; border:1px solid var(--ring); }
+    .stars{ font-size:22px; color:#f5c518; letter-spacing:2px; }
+    .slide .text{ color:var(--muted); }
+
+    /* ---------- FAQ ---------- */
+    .faq{ display:grid; grid-template-columns: 1.1fr 1fr; gap:26px; }
+    .faq .left h3{ font-size: clamp(22px, 3.4vw, 30px); margin:0; }
+    .faq .left p{ color:var(--muted); }
+    .accordion{ display:grid; gap:12px; }
+    details{
+      background:#fff; border:1px solid var(--ring); border-radius:14px; padding:14px 16px; box-shadow: var(--shadow);
+    }
+    summary{ cursor:pointer; font-weight:700; outline:none; }
+    details[open] summary{ color:var(--accent); }
+    .answer{ padding-top:8px; color:var(--muted); }
+    .anchor-btn{
+      display:inline-block; margin:.2rem 0 .5rem; padding:8px 12px; border-radius:999px; text-decoration:none; font-weight:700; background:var(--primary); color:#fff;
+    }
+
+    /* ---------- Footer / Social bar ---------- */
+    .footerbar{
+      background: rgba(255,255,255,.7); border-top:1px solid var(--ring);
+    }
+    .footer-inner{ max-width:1200px; margin:0 auto; padding:18px; display:flex; align-items:center; justify-content:center; gap:22px; }
+    .social{ display:flex; gap:18px; }
+    .social a{ width:40px; height:40px; display:grid; place-items:center; border-radius:50%; background:#fff; border:1px solid var(--ring); box-shadow: var(--shadow); text-decoration:none; }
+    .social svg{ width:20px; height:20px; }
+
+    /* ---------- Utilities ---------- */
+    .muted{ color:var(--muted); }
+    .grid-2{ display:grid; grid-template-columns: 1fr 1fr; gap:22px; }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 900px){
+      .courses{ grid-template-columns: 1fr; }
+      .faq{ grid-template-columns: 1fr; }
+      .slide{ grid-template-columns: 1fr; }
+    }
+    @media (max-width: 700px){
+      .timeline{ grid-template-columns: 1fr 1fr; }
+      .timeline::before{ top: unset; bottom: calc(50% - 2px); left:10px; right:10px; }
     }
   </style>
 </head>
 <body>
+  <!-- Top Navigation (Frozen) -->
+  <header class="nav">
+    <div class="nav-inner">
+      <!-- <div class="logo">Super<span>vision</span></div> -->
+      <div class="logo">
+        <span class="super">Super</span><span class="accent">vision</span>
+        <span class="tagline">english course</span>
+      </div>
+      <div class="spacer"></div>
+      <nav>
+        <!-- <a class="btn" href="#courses">Courses</a> -->
+        <details class="dropdown">
+            <summary class="btn">Courses</summary>
+            <div class="menu">
+                <a href="#course-1">English for Kids</a>
+                <a href="#course-2">English for Teens</a>
+                <a href="#course-3">English for Adults</a>
+                <a href="#course-4">English for Specific Purposes</a>
+                <a href="#course-5">IELTS Preparation</a>
+                <a href="#course-6">TOEFL Preparation</a>
+            </div>
+        </details>
+        <a class="btn" href="#contact">FAQ</a>
+        <a class="btn" href="">Blog</a>
+        <a class="btn cta" href="#howto">Get Started</a>
+      </nav>
+    </div>
+  </header>
 
-  <div class="programs">
-    <div class="choose-class">
-      Choose <br> Your <br> Class
-    </div>
-    <div class="program-card" onclick="location.href='#kids'">
-      <img src="english-for-kids.jpg" alt="English for Kids">
-      <h3>English for Kids</h3>
-    </div>
-    <div class="program-card" onclick="location.href='#teens'">
-      <img src="english-for-kids.jpg" alt="English for Teens">
-      <h3>English for Teens</h3>
-    </div>
-    <div class="program-card" onclick="location.href='#adults'">
-      <img src="english-for-kids.jpg" alt="English for Adults">
-      <h3>English for Adults</h3>
-    </div>
-    <div class="program-card" onclick="location.href='#toefl'">
-      <img src="english-for-kids.jpg" alt="TOEFL Preparation">
-      <h3>TOEFL Preparation</h3>
-    </div>
-    <div class="program-card" onclick="location.href='#ielts'">
-      <img src="english-for-kids.jpg" alt="IELTS Preparation">
-      <h3>IELTS Preparation</h3>
-    </div>
-    <div class="program-card" onclick="location.href='#esp'">
-      <img src="english-for-kids.jpg" alt="English for Specific Purposes">
-      <h3>English for Specific Purposes</h3>
-    </div>
-  </div>
+  <!-- ACHIEVEMENT -->
+  <section aria-label="Institution stats">
+    <div class="shell achv">
+      <div class="achv-top">
+        <div class="achv-item" aria-label="Experiences">
+          <div class="num">6+ yrs</div>
+          <div class="label">Experiences</div>
+        </div>
+        <div class="achv-item" aria-label="Students">
+          <div class="num">1,000+</div>
+          <div class="label">Learners</div>
+        </div>
+        <div class="achv-item" aria-label="Monthly Classes">
+          <div class="num">20+</div>
+          <div class="label">Classes per-month</div>
+        </div>
+      </div>
 
-  <!-- Sections for details -->
-  <section id="kids">
-    <h2>English for Kids</h2>
-    <p>Fun and engaging English classes for children.</p>
+      <div class="achv-bottom">PROFESSIONAL | TRUSTED | AFFORDABLE | FLEXIBLE<br>
+        <!-- <strong style="font-weight: normal; font-size: 17px;">Your best choice to elevate your English skills</strong> -->
+        <strong id="achv-tagline" class="wave-text" style="font-weight: normal; font-size: 17px;">
+        Your best choice to elevate your English skills
+        </strong>
+      </div>
+    </div>
   </section>
 
-  <section id="teens">
-    <h2>English for Teens</h2>
-    <p>Improve English skills for school and daily life.</p>
+  <!-- COURSES -->
+  <section id="course-1" class="course-section">
+    <div class="courses">
+        <div class="left">
+            <h2 class="muted" style="margin:0 0 10px;">English for Kids</h2>
+            <p>
+                <strong>Program favorit anak-anak TK dan SD!</strong><br>
+                Kelas ini dirancang dengan pembelajaran yang seru dan interaktif, dengan materi speaking yang relevan dan mudah dipahami.
+                Anak-anak diajak berbicara dalam bahasa Inggris lewat aktivitas yang menyenangkan, sambil memperkaya kosa kata kekinian yang sesuai dengan dunia mereka.
+            </p>
+            <img class="course-photo" src="kids.jpg" loading="lazy" />
+        </div>
+        <div class="chips">
+            <div class="chip">
+                <strong>Paket Hemat</strong><br>
+                • Rp250.000/bulan<br>
+                • Total 4x pertemuan<br>
+                • 1x pertemuan per-pekan (durasi 60 menit)
+            </div>
+            <div class="chip">
+                <strong>Paket Cermat</strong><br>
+                • Rp500.000/bulan<br>
+                • Total 8x pertemuan<br>
+                • 3x pertemuan per-pekan (durasi 60 menit)
+            </div>
+            <div class="chip">
+                <strong>Paket Intensif</strong><br>
+                • Rp750.000/bulan<br>
+                • Total 12x pertemuan<br>
+                • 3x pertemuan per-pekan (durasi 60 menit)
+            </div>
+        </div>
+    </div>
   </section>
 
-  <section id="adults">
-    <h2>English for Adults</h2>
-    <p>Practical English for professional and personal growth.</p>
+  <section id="course-2" class="course-section">
+    <div class="courses">
+        <div class="left">
+            <h2 class="muted" style="margin:0 0 10px;">English for Teens</h2>
+            <p>
+                <strong>Program favorit siswa-siswi SMP dan SMA!</strong><br>
+                Materinya disesuaikan dengan kurikulum sekolah dan kebutuhan remaja masa kini — mulai dari grammar dasar sampai speaking for daily conversation.
+                Kamu bisa pakai materi dari kami atau dari sekolah, biar belajar makin fleksibel dan nggak membosankan!
+            </p>
+            <img class="course-photo" src="teens.jpg" loading="lazy" />
+        </div>
+        <div class="chips">
+            <div class="chip">
+                <strong>Paket Hemat</strong><br>
+                • Rp255.000/bulan<br>
+                • Total 4x pertemuan<br>
+                • 1x pertemuan per-pekan (durasi 60 menit)
+            </div>
+            <div class="chip">
+                <strong>Paket Cermat</strong><br>
+                • Rp510.000/bulan<br>
+                • Total 8x pertemuan<br>
+                • 2x pertemuan per-pekan (durasi 60 menit)
+            </div>
+            <div class="chip">
+                <strong>Paket Intensif</strong><br>
+                • Rp760.000/bulan<br>
+                • Total 12x pertemuan<br>
+                • 3x pertemuan per-pekan (durasi 60 menit)
+            </div>
+        </div>
+    </div>
   </section>
 
-  <section id="toefl">
-    <h2>TOEFL Preparation</h2>
-    <p>Get ready for your TOEFL exam with expert guidance.</p>
+  <section id="course-3" class="course-section">
+    <div class="courses">
+        <div class="left">
+            <h2 class="muted" style="margin:0 0 10px;">English for Adults</h2>
+            <p>
+                <strong>Belajar bahasa Inggris dari nol tanpa ribet!</strong><br>
+                Cocok banget buat mahasiswa, pekerja, ibu rumah tangga, maupun fresh graduate yang ingin meningkatkan kemampuan bahasa Inggris untuk keperluan sehari-hari.
+                Kelas ini menggabungkan basic grammar dan speaking practice supaya kamu bisa paham aturan bahasanya sekaligus lancar ngobrol. Praktis dan aplikatif!
+            </p>
+            <img class="course-photo" src="adults.jpg" loading="lazy" />
+        </div>
+        <div class="chips">
+            <div class="chip">
+                <strong>Paket Hemat</strong><br>
+                • Rp260.000/bulan<br>
+                • Total 4x pertemuan<br>
+                • 1x pertemuan per-pekan (durasi 60 menit)
+            </div>
+            <div class="chip">
+                <strong>Paket Cermat</strong><br>
+                • Rp520.000/bulan<br>
+                • Total 8x pertemuan<br>
+                • 2x pertemuan per-pekan (durasi 60 menit)
+            </div>
+            <div class="chip">
+                <strong>Paket Intensif</strong><br>
+                • Rp780.000/bulan<br>
+                • Total 12x pertemuan<br>
+                • 3x pertemuan per-pekan (durasi 60 menit)
+            </div>
+        </div>
+    </div>
   </section>
 
-  <section id="ielts">
-    <h2>IELTS Preparation</h2>
-    <p>Boost your IELTS score with structured preparation.</p>
+  <section id="course-4" class="course-section">
+    <div class="courses">
+        <div class="left">
+            <h2 class="muted" style="margin:0 0 10px;">English for Specific Purposes</h2>
+            <p>
+                <strong>Punya tujuan khusus? Misalnya mau job interview, presentasi internasional, atau persiapan event tertentu?</strong><br>
+                Kelas ini bisa disesuaikan sepenuhnya dengan kebutuhan kamu.
+                Materi dan latihan dibuat berdasarkan target pribadi masing-masing peserta.<br>
+                So, what are you waiting for? Daftar sekarang dan wujudkan tujuanmu!
+            </p>
+        </div>
+        <div class="chips">
+            <div class="chip">
+                <strong>Paket Reguler</strong><br>
+                • Rp280.000/bulan<br>
+                • Total 4x pertemuan<br>
+                • 1x pertemuan per-pekan (durasi 60 menit)
+            </div>
+            <div class="chip">
+                <strong>Paket Reguler Percepatan</strong><br>
+                • Rp300.000/bulan<br>
+                • Total 4x pertemuan<br>
+                • dapat setiap hari atau selesai dalam 1 minggu (durasi 60 menit)
+            </div>
+            <div class="chip">
+                <strong>Paket Intensif</strong><br>
+                • Rp560.000/bulan<br>
+                • Total 8x pertemuan<br>
+                • 2x pertemuan per-pekan (durasi 60 menit)
+            </div>
+        </div>
+    </div>
   </section>
 
-  <section id="esp">
-    <h2>English for Specific Purposes</h2>
-    <p>Tailored English programs for different professions.</p>
+  <section id="course-5" class="course-section">
+    <div class="courses">
+        <div class="left">
+            <h2 class="muted" style="margin:0 0 10px;">IELTS Preparation</h2>
+            <p>
+                <strong>Target skor IELTS tinggi? Yuk, persiapin dari sekarang!</strong><br>
+                Program ini cocok banget buat kamu yang mau lanjut studi, kerja, atau apply beasiswa internasional.
+                Kamu bakal belajar bareng tutor profesional yang bikin latihan IELTS terasa ringan dan fun.
+                Selain latihan soal, kamu juga bisa asah speaking skill biar makin percaya diri dan lancar pas tes nanti!
+            </p>
+        </div>
+        <div class="chips">
+            <div class="chip">
+                <strong>Paket per-Skill</strong><br>
+                • Rp880.000/bulan<br>
+                • Total 8x pertemuan<br>
+                • 2x pertemuan per-pekan (durasi 60 menit)
+            </div>
+            <div class="chip">
+                <strong>Paket All Skills Reguler</strong><br>
+                • Rp900.000/bulan<br>
+                • Total 8x pertemuan<br>
+                • 2x pertemuan per-pekan (durasi 60 menit)
+            </div>
+            <div class="chip">
+                <strong>Paket All Skills Intensif</strong><br>
+                • Rp1.800.000/bulan<br>
+                • Total 16x pertemuan<br>
+                • 4x pertemuan per-pekan (durasi 60 menit)
+            </div>
+        </div>
+    </div>
   </section>
 
+  <section id="course-6" class="course-section">
+    <div class="courses">
+        <div class="left">
+            <h2 class="muted" style="margin:0 0 10px;">TOEFL Preparation</h2>
+            <p>
+                <strong>Mau dapet skor TOEFL tinggi buat beasiswa, kerja, atau studi?</strong><br>
+                Kelas ini jawabannya!<br>
+                Bareng tutor profesional yang asik, kamu bakal belajar strategi cepat dan tepat untuk mengerjakan soal TOEFL.
+                Nggak cuma latihan soal, tapi juga dibekali tips & tricks biar TOEFL terasa jauh lebih mudah.
+            </p>
+        </div>
+        <div class="chips">
+            <div class="chip">
+                <strong>Paket Hemat</strong><br>
+                • Rp385.000/bulan<br>
+                • Total 4x pertemuan<br>
+                • 1x pertemuan per-pekan (durasi 60 menit)
+            </div>
+            <div class="chip">
+                <strong>Paket Cermat</strong><br>
+                • Rp770.000/bulan<br>
+                • Total 8x pertemuan<br>
+                • 2x pertemuan per-pekan (durasi 60 menit)
+            </div>
+            <div class="chip">
+                <strong>Paket Intensif</strong><br>
+                • Rp1.115.000/bulan<br>
+                • Total 12x pertemuan<br>
+                • 3x pertemuan per-pekan (durasi 60 menit)
+            </div>
+        </div>
+    </div>
+  </section>
+
+  <!-- HOW TO REGISTER -->
+  <section id="howto">
+    <div class="shell steps">
+      <div class="top">Bagaimana Caranya untuk Memulai Belajar?</div>
+      <div class="timeline">
+        <!-- Step 1 -->
+        <div class="node">
+          <div class="imgwrap">
+            <img alt="chat-admin" src="chat.png" />
+          </div>
+          <div class="title">Hubungi Admin</div>
+          <div class="desc">konsultasikan dengan Admin kami terkait jenis course yang dibutuhkan dan jadwal yang sesuai dengan kenyamananmu.</div>
+        </div>
+        <!-- Step 2 -->
+        <div class="node">
+          <div class="imgwrap">
+            <img alt="fill-form" src="form.png" />
+          </div>
+          <div class="title">Isi Formulir</div>
+          <div class="desc">Lengkapi data diri, serta jenis course dan jadwal yang telah kamu tentukan.</div>
+        </div>
+        <!-- Step 3 -->
+        <div class="node">
+          <div class="imgwrap">
+            <img alt="start-learning" src="learn.png" />
+          </div>
+          <div class="title">Mulai Kelasmu</div>
+          <div class="desc">Tutor kami akan selalu mengingatkanmu untuk hadir tepat waktu di kelas online yang telah kami sediakan (Zoom atau Google Meet).</div>
+        </div>
+      </div>
+
+    <div class="flow-cta">
+        <a class="anchor-btn" href="https://api.whatsapp.com/send/?phone=6285802642392&text&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">
+            Hubungi Admin Sekarang
+        </a>
+    </div>
+    </div>
+  </section>
+
+  <!-- REVIEW (carousel) -->
+  <section class="review" aria-label="Reviews">
+    <h2 style="text-align:center;">Yuk, dengar langsung pendapat para siswa kami tentang kelas ini!</h2>
+    <div class="carousel" aria-live="polite">
+      <!-- Slide 1 -->
+      <article class="slide" aria-roledescription="slide">
+        <img alt="Learner photo" src="https://picsum.photos/500/400?random=11" />
+        <div>
+          <p class="text">
+            Masyaa allah bangett sihh bingung mau ngejelasinnya🤭
+            <br>
+            karna yang tadinya aku tuh bener" nol bangett di bahasa inggris ketika aku ikut les privat miss lida bisa sesignifikan itu perubahan yg aku rasain padahal baru 4x pertemuan lohh, 
+            dari materi yg di jelasin itu mudah banget di pahamin, dari cara ngobrolnya juga enak banget santai nggak ada tekanan, jadi untuk pemula yg kayak aku gini sangat" terbantu banget dengan iku les privat miss lida
+            <br>
+            Sehat" miss
+          </p>
+          <div class="stars" aria-label="5 out of 5">★★★★★</div>
+          <p class="text"><strong>Fitri (English for Adults)</strong></p>
+        </div>
+      </article>
+      <!-- Slide 2 -->
+      <article class="slide" aria-roledescription="slide">
+        <img alt="Learner photo" src="https://picsum.photos/500/400?random=12" />
+        <div>
+          <p class="text">
+            Ahhh akhirnya saya menemukan
+            tempat dimana bisa menjawab segala
+            kebingungan saya tentang ilmu belajar
+            b. Inggris  , pembelajaranya santai
+            namun mudah dipahami miss nya
+            humble bener² bisa dijadikan guru
+            sekaligus teman curhat hahah,
+            sebenarnya saya cukup mengerti,
+            namun ingin terus mendalami lagi ,next
+            time saya akan datang lagi
+            wait for me miss
+          </p>
+          <div class="stars" aria-label="5 out of 5">★★★★★</div>
+          <p class="text"><strong>Ifah</strong></p>
+        </div>
+      </article>
+      <!-- Slide 3 -->
+      <article class="slide" aria-roledescription="slide">
+        <img alt="Learner photo" src="https://picsum.photos/500/400?random=13" />
+        <div>
+          <p class="text">
+            Alhmdullilah setelah azmi
+            ikut bimbingan bersama
+            mis yasinta banyak
+            peningkatan besar dalam
+            pelajaran bahasa inggris
+            ,makasi Mis yasinta
+            atas bimbingan nya
+          </p>
+          <div class="stars" aria-label="5 out of 5">★★★★★</div>
+          <p class="text">Azmi (English for Kids)</p>
+        </div>
+      </article>
+      <!-- Slide 4 -->
+      <!-- <article class="slide" aria-roledescription="slide">
+        <img alt="Learner photo" src="https://picsum.photos/500/400?random=14" />
+        <div>
+          <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In non felis maximus, eleifend orci eu, congue lorem.</p>
+          <div class="stars" aria-label="5 out of 5">★★★★★</div>
+          <p class="text">Lorem ipsum dolor sit amet.</p>
+        </div>
+      </article> -->
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq" id="faq">
+    <div class="left">
+      <h3>Barangkali ada yang terlewat, yuk cek lagi di sini!</h3>
+      <p>Temukan penjelasan atas pertanyaan yang sering muncul (FAQ) tentang kursus kami.</p>
+    </div>
+    <div class="accordion">
+      <!-- Q1 -->
+      <details>
+        <summary>Bingung nih mau milih kelas apa</summary>
+        <div class="answer">
+          <a class="anchor-btn" href="#course-1">See Courses</a>
+          <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae nibh nec est cursus pulvinar.</div>
+        </div>
+      </details>
+      <!-- Q2 -->
+      <details>
+        <summary>Bagaimana cara mendaftarnya?</summary>
+        <div class="answer">
+          <a class="anchor-btn" href="#howto">Go to How to Register</a>
+          <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae nibh nec est cursus pulvinar.</div>
+        </div>
+      </details>
+      <!-- Q3 -->
+      <details>
+        <summary>Bagaimana alur proses pembelajarannya?</summary>
+        <div class="answer">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse in pulvinar nibh, et bibendum lorem.</div>
+      </details>
+      <!-- Q4 -->
+      <details>
+        <summary>Kalau saya ada urusan mendadak, apakah bisa reschedule?</summary>
+        <div class="answer">
+          <a class="anchor-btn" href="#course-1">See Courses</a>
+          <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae nibh nec est cursus pulvinar.</div>
+        </div>
+      </details>
+      <!-- Q5 -->
+      <details>
+        <summary>Pembayarannya bagaimana, Kak?</summary>
+        <div class="answer">
+          <a class="anchor-btn" href="#course-1">See Courses</a>
+          <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae nibh nec est cursus pulvinar.</div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- Bottom Social Bar -->
+  <footer class="footerbar" id="contact">
+    <div class="footer-inner">
+      <div class="social" aria-label="Social links">
+        <a aria-label="Instagram" href="https://www.instagram.com/supervisionenglishcourse/" target="_blank" rel="noopener noreferrer">
+          <img src="instagram.png" alt="Instagram" width="20" height="20">
+        </a>
+        <a aria-label="TikTok" href="http://tiktok.com/@supervisionenglish_" target="_blank" rel="noopener noreferrer">
+          <img src="tiktok.png" alt="TikTok" width="20" height="20">
+        </a>
+        <a aria-label="WhatsApp" href="https://api.whatsapp.com/send/?phone=6285802642392&text&type=phone_number&app_absent=0" target="_blank" rel="noopener noreferrer">
+          <img src="whatsapp.png" alt="WhatsApp" width="20" height="20">
+        </a>
+      </div>
+    </div>
+  </footer>
+
+    <script>
+    // Close dropdown when clicking outside OR when choosing a menu link
+    document.addEventListener('click', function (e) {
+    const openDropdowns = document.querySelectorAll('.nav details.dropdown[open]');
+    openDropdowns.forEach((d) => {
+        const clickedInside = e.target.closest('.nav details.dropdown') === d;
+        const clickedMenuLink = e.target.closest('.nav details.dropdown .menu a');
+        if (!clickedInside || clickedMenuLink) {
+        d.removeAttribute('open');
+        }
+    });
+    });
+
+    // Optional: Close dropdown when pressing Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            const dropdowns = document.querySelectorAll('.nav details.dropdown[open]');
+            dropdowns.forEach(dropdown => {
+                dropdown.removeAttribute('open');
+            });
+        }
+    });
+
+    // Wavy tagline: split into spans + animate on scroll into view
+    document.addEventListener('DOMContentLoaded', function () {
+    const el = document.getElementById('achv-tagline');
+    if (!el) return;
+
+    // Split text into spans
+    const txt = el.textContent;
+    el.textContent = '';
+    [...txt].forEach((ch, i) => {
+        const span = document.createElement('span');
+        span.className = 'char';
+        span.textContent = ch;
+        span.style.animationDelay = (i * 15) + 'ms'; // wave timing
+        el.appendChild(span);
+    });
+
+    // Trigger when visible
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            el.classList.add('is-visible');
+            io.unobserve(el); // run once
+        }
+        });
+    }, { threshold: 0.6 });
+    io.observe(el);
+    });
+
+    </script>
+    
 </body>
 </html>
