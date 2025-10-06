@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Supervision — English Learning</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Outfit:wght@600;700;800&family=Manrope:wght@600;700;800&family=Sora:wght@600;700;800&family=DM+Sans:wght@600;700&display=swap" rel="stylesheet">
   <!-- <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet"> -->
   <style>
     :root{
@@ -18,6 +19,7 @@
       --circle:#ffffff;
       --shadow: 0 10px 25px rgba(2,6,23,.08);
       --radius: 20px;
+      --values-font: "DM Sans";
     }
 
     *{ box-sizing: border-box; }
@@ -28,7 +30,7 @@
       background: var(--bg-grad);
       line-height:1.6;
       scroll-behavior:smooth;
-      padding-top: 90px;
+      padding-top: 66px;
     }
 
     /* ---------- Top Nav (frozen) ---------- */
@@ -39,21 +41,35 @@
       border-bottom:1px solid var(--ring);
     }
     .nav-inner{
-      max-width: 1200px; margin: 0 auto; padding: 12px 20px;
+      max-width: 1200px; margin: 0 auto; padding: 3px 13px;
       display:flex; align-items:center; gap:16px;
     }
+    /* wrapper now holds icon + text */
     .logo{
-        display: inline-grid;
-        grid-template-columns: auto auto;
-        grid-template-areas:
-            "super accent"
-            ". tagline";
-        align-items: end;
-        font-family: "Poppins", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-        font-weight: 800;
-        font-size: clamp(24px, 2.6vw, 34px);
-        letter-spacing: .2px;
-        line-height: 1;
+      display: inline-flex;
+      align-items: center;     /* aligns icon with the big word baseline */
+      gap: 10px;                 /* space between icon and text */
+    }
+    /* move your previous grid styles here */
+    .logo .logotext{
+      display: inline-grid;
+      grid-template-columns: auto auto;
+      grid-template-areas:
+        "super accent"
+        ". tagline";
+      align-items: end;
+      font-family: "Poppins", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      font-weight: 800;
+      font-size: clamp(22px, 2.2vw, 30px);  /* controls both text size and icon size */
+      letter-spacing: .2px;
+      line-height: 1;
+    }
+    /* icon scales with the word height (1em = current font-size) */
+    .logo .logo-icon{
+      width: 4em;
+      height: 4em;
+      display: block;
+      align-self: center;
     }
     .logo span{ color: var(--accent); font-weight: 600; }
     .logo .super   { grid-area: super;  color: var(--primary); }   /* stays black/dark */
@@ -68,17 +84,33 @@
         text-transform: lowercase;
     }
     .spacer{ flex:1; }
-    .nav a.btn{
-      text-decoration:none; color:var(--primary);
-      padding:10px 14px; border-radius:10px; border:1px solid transparent;
-      transition:.2s ease; font-weight:600;
+
+    /* one rule for both <a> and <summary> buttons */
+    .nav .btn{
+      text-decoration:none;
+      color:var(--primary);
+      padding:10px 14px;
+      border-radius:10px;
+      border:1px solid transparent;
+      transition:.2s ease;
+      font-weight:600;
+      display:inline-block;
+      vertical-align:middle;   /* align with neighboring buttons */
+      line-height:1.2;         /* match link height */
     }
-    .nav a.btn:hover{ background:#fff; border-color:var(--ring); box-shadow:var(--shadow); }
-    .nav a.btn.cta{ background:var(--primary); color:#fff; }
-    .nav a.btn.cta:hover{ transform: translateY(-1px); }
+    .nav .btn:hover{ background:#fff; border-color:var(--ring); box-shadow:var(--shadow); }
+    .nav .btn.cta{ background:var(--primary); color:#fff; }
+    .nav .btn.cta:hover{ transform: translateY(-1px); }
 
     /* Dropdown (Courses) */
-    .nav details.dropdown{ position:relative; display:inline-block; }
+    .nav details.dropdown{ 
+      position:relative; 
+      display:inline-block; 
+      background:transparent;
+      border-color:transparent;
+      box-shadow:none;
+      transform: translateX(25px);
+    }
     .nav details.dropdown > summary.btn{ list-style:none; cursor:pointer; }
     .nav details.dropdown > summary.btn::-webkit-details-marker{ display:none; }
     .nav details.dropdown > summary.btn::after{ content:" ▾"; font-weight:400; }
@@ -143,6 +175,14 @@
     .wave-text .char { animation:none !important; opacity:1; }
     }
 
+    .values-headline{
+      font-family: var(--values-font), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-weight: 800;
+      letter-spacing: .06em;             /* a bit of tracking for ALL CAPS */
+      font-size: clamp(18px, 2.2vw, 22px);
+      display: inline-block;
+    }
+
     /* ---------- COURSES ---------- */
     .courses{ display:grid; grid-template-columns: 1.2fr 1fr; gap:28px; align-items:stretch; }
     .courses .left{ background:#fff; border-radius: var(--radius); padding:28px; border:1px solid var(--ring); box-shadow: var(--shadow); }
@@ -162,11 +202,51 @@
     margin:16px auto 0;   /* top | left/right | bottom → centers it */
     }
 
+    /* When jumping to a course section via hash, keep some headroom below the navbar */
+    .course-section{ scroll-margin-top: clamp(60px, 18vh, 140px); }
+
     /* Optional: keep a neat 16:9 crop if your images vary a lot */
     /* .course-section .left .course-photo{
     aspect-ratio: 16 / 9;
     object-fit: cover;
     } */
+
+    /* Scroll-reveal */
+    .reveal{
+      opacity: 0;
+      transform: translateY(14px);
+      filter: blur(2px);
+      transition: opacity .6s ease, transform .6s ease, filter .6s ease;
+      will-change: transform, opacity, filter;
+    }
+    .reveal.is-visible{
+      opacity: 1;
+      transform: none;
+      filter: blur(0);
+    }
+
+    /* Staggered group (e.g., the 3 chips) */
+    .reveal-stagger > *{
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity .6s ease, transform .6s ease;
+      will-change: transform, opacity;
+    }
+    .reveal-stagger.is-visible > *{
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Accessibility */
+    @media (prefers-reduced-motion: reduce){
+      .reveal,
+      .reveal-stagger > *{
+        transition: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+      }
+    }
 
     /* ---------- HOW TO REGISTER ---------- */
     .steps{ display:flex; flex-direction:column; gap:20px; }
@@ -265,6 +345,32 @@
     .muted{ color:var(--muted); }
     .grid-2{ display:grid; grid-template-columns: 1fr 1fr; gap:22px; }
 
+    /* Floating WhatsApp button (bottom-right, stays on scroll) */
+    .whatsapp-float{
+      position: fixed;
+      bottom: 50px;
+      right: 20px;
+      z-index: 1200;             /* above the fixed nav (yours is 1000) */
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      background: #25D366;       /* WhatsApp green */
+      color: #fff;
+      display: grid;
+      place-items: center;
+      text-decoration: none;
+      box-shadow: 0 12px 28px rgba(2,6,23,.18), 0 6px 12px rgba(2,6,23,.10);
+      transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+    }
+    .whatsapp-float:hover{
+      transform: translateY(-2px) scale(1.04);
+      filter: brightness(1.05);
+      box-shadow: 0 16px 32px rgba(2,6,23,.22), 0 8px 16px rgba(2,6,23,.12);
+    }
+    .whatsapp-float:active{ transform: translateY(0) scale(.98); }
+    .whatsapp-float img{ width: 40px; height: 40px; display: block; }
+
+
     /* ---------- Responsive ---------- */
     @media (max-width: 900px){
       .courses{ grid-template-columns: 1fr; }
@@ -282,9 +388,16 @@
   <header class="nav">
     <div class="nav-inner">
       <!-- <div class="logo">Super<span>vision</span></div> -->
-      <div class="logo">
+      <!-- <div class="logo">
         <span class="super">Super</span><span class="accent">vision</span>
         <span class="tagline">english course</span>
+      </div> -->
+      <div class="logo">
+        <img class="logo-icon" src="logo-2.png" alt="Supervision icon">
+        <div class="logotext">
+          <span class="super">Super</span><span class="accent">vision</span>
+          <span class="tagline">english course</span>
+        </div>
       </div>
       <div class="spacer"></div>
       <nav>
@@ -325,19 +438,25 @@
         </div>
       </div>
 
-      <div class="achv-bottom">PROFESSIONAL | TRUSTED | AFFORDABLE | FLEXIBLE<br>
-        <!-- <strong style="font-weight: normal; font-size: 17px;">Your best choice to elevate your English skills</strong> -->
+      <!-- <div class="achv-bottom">PROFESSIONAL | TRUSTED | AFFORDABLE | FLEXIBLE<br>
         <strong id="achv-tagline" class="wave-text" style="font-weight: normal; font-size: 17px;">
         Your best choice to elevate your English skills
         </strong>
+      </div> -->
+      <div class="achv-bottom">
+        <span class="values-headline">PROFESSIONAL | TRUSTED | AFFORDABLE | FLEXIBLE</span><br>
+        <strong id="achv-tagline" class="wave-text" style="font-weight: normal; font-size: 17px;">
+          Your best choice to elevate your English skills
+        </strong>
       </div>
+
     </div>
   </section>
 
   <!-- COURSES -->
   <section id="course-1" class="course-section">
     <div class="courses">
-        <div class="left">
+        <div class="left reveal">
             <h2 class="muted" style="margin:0 0 10px;">English for Kids</h2>
             <p>
                 <strong>Program favorit anak-anak TK dan SD!</strong><br>
@@ -346,7 +465,7 @@
             </p>
             <img class="course-photo" src="kids.jpg" loading="lazy" />
         </div>
-        <div class="chips">
+        <div class="chips reveal-stagger">
             <div class="chip">
                 <strong>Paket Hemat</strong><br>
                 • Rp250.000/bulan<br>
@@ -371,7 +490,7 @@
 
   <section id="course-2" class="course-section">
     <div class="courses">
-        <div class="left">
+        <div class="left reveal">
             <h2 class="muted" style="margin:0 0 10px;">English for Teens</h2>
             <p>
                 <strong>Program favorit siswa-siswi SMP dan SMA!</strong><br>
@@ -380,7 +499,7 @@
             </p>
             <img class="course-photo" src="teens.jpg" loading="lazy" />
         </div>
-        <div class="chips">
+        <div class="chips reveal-stagger">
             <div class="chip">
                 <strong>Paket Hemat</strong><br>
                 • Rp255.000/bulan<br>
@@ -405,7 +524,7 @@
 
   <section id="course-3" class="course-section">
     <div class="courses">
-        <div class="left">
+        <div class="left reveal">
             <h2 class="muted" style="margin:0 0 10px;">English for Adults</h2>
             <p>
                 <strong>Belajar bahasa Inggris dari nol tanpa ribet!</strong><br>
@@ -414,7 +533,7 @@
             </p>
             <img class="course-photo" src="adults.jpg" loading="lazy" />
         </div>
-        <div class="chips">
+        <div class="chips reveal-stagger">
             <div class="chip">
                 <strong>Paket Hemat</strong><br>
                 • Rp260.000/bulan<br>
@@ -439,7 +558,7 @@
 
   <section id="course-4" class="course-section">
     <div class="courses">
-        <div class="left">
+        <div class="left reveal">
             <h2 class="muted" style="margin:0 0 10px;">English for Specific Purposes</h2>
             <p>
                 <strong>Punya tujuan khusus? Misalnya mau job interview, presentasi internasional, atau persiapan event tertentu?</strong><br>
@@ -449,7 +568,7 @@
             </p>
             <img class="course-photo" src="specific-purposes.png" loading="lazy" />
         </div>
-        <div class="chips">
+        <div class="chips reveal-stagger">
             <div class="chip">
                 <strong>Paket Reguler</strong><br>
                 • Rp280.000/bulan<br>
@@ -474,7 +593,7 @@
 
   <section id="course-5" class="course-section">
     <div class="courses">
-        <div class="left">
+        <div class="left reveal">
             <h2 class="muted" style="margin:0 0 10px;">IELTS Preparation</h2>
             <p>
                 <strong>Target skor IELTS tinggi? Yuk, persiapin dari sekarang!</strong><br>
@@ -484,7 +603,7 @@
             </p>
             <img class="course-photo" src="ielts.png" loading="lazy" />
         </div>
-        <div class="chips">
+        <div class="chips reveal-stagger">
             <div class="chip">
                 <strong>Paket per-Skill</strong><br>
                 • Rp880.000/bulan<br>
@@ -509,7 +628,7 @@
 
   <section id="course-6" class="course-section">
     <div class="courses">
-        <div class="left">
+        <div class="left reveal">
             <h2 class="muted" style="margin:0 0 10px;">TOEFL Preparation</h2>
             <p>
                 <strong>Mau dapet skor TOEFL tinggi buat beasiswa, kerja, atau studi?</strong><br>
@@ -519,7 +638,7 @@
             </p>
             <img class="course-photo" src="toefl.png" loading="lazy" />
         </div>
-        <div class="chips">
+        <div class="chips reveal-stagger">
             <div class="chip">
                 <strong>Paket Hemat</strong><br>
                 • Rp385.000/bulan<br>
@@ -677,7 +796,7 @@
       </details>
       <!-- Q3 -->
       <details>
-        <summary>Bagaimana cara mendaftarnya?</summary>
+        <summary>Cara mendaftarnya bagaimana?</summary>
         <div class="answer">
           <a class="anchor-btn" href="#howto">Go to Alur Pendaftaran</a>
           <div>Silakan klik tombol di atas untuk melihat alurnya.</div>
@@ -685,7 +804,7 @@
       </details>
       <!-- Q4 -->
       <details>
-        <summary>Bagaimana alur proses pembelajarannya?</summary>
+        <summary>Alur proses pembelajarannya bagaimana?</summary>
         <div class="answer">
           Setelah kamu memilih course dan jadwal, 
           Tutor kami akan menghubungimu untuk menginformasikan room Zoom / Google Meet yang digunakan untuk pembelajaran.
@@ -702,7 +821,7 @@
       <details>
         <summary>Pembayarannya bagaimana, Kak?</summary>
         <div class="answer">
-          <div>Setelah kamu mengisi formulir yang diberikan oleh Admin, kamu bisa melanjutkan ke paymentnya ya.</div>
+          <div>Setelah kamu mengisi formulir yang diberikan oleh Admin, kamu bisa melakukan pembayaran sesuai dengan petunjuk yang diberikan ya.</div>
         </div>
       </details>
     </div>
@@ -750,33 +869,102 @@
 
     // Wavy tagline: split into spans + animate on scroll into view
     document.addEventListener('DOMContentLoaded', function () {
-    const el = document.getElementById('achv-tagline');
-    if (!el) return;
+      /* --- tagline wave (unchanged) --- */
+      const el = document.getElementById('achv-tagline');
+      if (el) {
+        const txt = el.textContent;
+        el.textContent = '';
+        [...txt].forEach((ch, i) => {
+          const span = document.createElement('span');
+          span.className = 'char';
+          span.textContent = ch;
+          span.style.animationDelay = (i * 15) + 'ms';
+          el.appendChild(span);
+        });
 
-    // Split text into spans
-    const txt = el.textContent;
-    el.textContent = '';
-    [...txt].forEach((ch, i) => {
-        const span = document.createElement('span');
-        span.className = 'char';
-        span.textContent = ch;
-        span.style.animationDelay = (i * 15) + 'ms'; // wave timing
-        el.appendChild(span);
+        const waveIO = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              el.classList.add('is-visible');
+              waveIO.unobserve(el);
+            }
+          });
+        }, { threshold: 0.6 });
+        waveIO.observe(el);
+      }
+
+      /* --- fade / slide reveal on scroll (additions) --- */
+      const singles = document.querySelectorAll('.reveal');
+      const groups  = document.querySelectorAll('.reveal-stagger');
+
+      const revealIO = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+
+          const target = entry.target;
+          target.classList.add('is-visible');
+
+          // optional stagger for groups
+          if (target.classList.contains('reveal-stagger')) {
+            [...target.children].forEach((child, i) => {
+              child.style.transitionDelay = (i * 100) + 'ms';
+            });
+          }
+
+          revealIO.unobserve(target); // run once per element
+        });
+      }, { threshold: 0.2 });
+
+      singles.forEach(el => revealIO.observe(el));
+      groups.forEach(el => revealIO.observe(el));
     });
 
-    // Trigger when visible
-    const io = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            el.classList.add('is-visible');
-            io.unobserve(el); // run once
-        }
+    document.addEventListener('DOMContentLoaded', () => {
+      const nav = document.querySelector('.nav');
+      const navH = () => (nav ? nav.offsetHeight : 0);
+
+      function scrollToCenter(hash) {
+        const el = document.querySelector(hash);
+        if (!el) return;
+
+        const rect = el.getBoundingClientRect();
+        const pageY = window.pageYOffset || document.documentElement.scrollTop;
+        const available = window.innerHeight - navH();          // visible height under the fixed nav
+        const centerOffset = Math.max((available - el.offsetHeight) / 2, 12); // clamp a little padding
+
+        // If the section is shorter than the viewport, center it; otherwise just tuck under the nav
+        const top = rect.top + pageY - (el.offsetHeight < available ? navH() + centerOffset
+                                                                    : navH() + 12);
+
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+
+      // Intercept clicks from the nav & dropdown menu
+      document.querySelectorAll('.nav a[href^="#"], .nav .menu a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+          e.preventDefault();
+          const hash = a.getAttribute('href');
+          scrollToCenter(hash);
+
+          // close dropdown after choosing
+          const dd = a.closest('details.dropdown');
+          if (dd) dd.removeAttribute('open');
         });
-    }, { threshold: 0.6 });
-    io.observe(el);
+      });
+
+      // If the page loads with a hash, center that section too
+      if (location.hash) {
+        setTimeout(() => scrollToCenter(location.hash), 0);
+      }
     });
 
     </script>
     
+    <a class="whatsapp-float"
+      href="https://api.whatsapp.com/send/?phone=6285802642392&text&type=phone_number&app_absent=0"
+      target="_blank" rel="noopener noreferrer"
+      aria-label="Chat via WhatsApp">
+      <img src="whatsapp-float.png" alt="" aria-hidden="true">
+    </a>
 </body>
 </html>
