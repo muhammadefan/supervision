@@ -82,7 +82,28 @@
       .topnav .btn, .topnav summary.btn{
         display:block; padding:12px 10px; border-radius:10px;
       }
-      .topnav details.dropdown{ display:block; }    /* keep Courses */
+      /* make all items look the same in the mobile drawer */
+      .topnav .btn{
+        display:block;
+        padding:14px 0;           /* vertical spacing only */
+      }
+      .topnav details.dropdown{ transform: none; display:block; padding-left: 1px;}    /* keep Courses */
+      /* FIX: remove summary's hidden-marker indent on mobile */
+      .topnav details.dropdown > summary.btn{
+        display:block;
+        list-style:none;
+        margin-left:0;
+        padding-left:0;
+        -webkit-margin-start:0;   /* iOS Safari */
+        -webkit-padding-start:0;  /* iOS Safari */
+        transform: translateX(-25px);
+      }
+      .topnav details.dropdown > summary.btn::-webkit-details-marker{ display:none; }
+
+      /* keep the little caret close to the word */
+      .topnav details.dropdown > summary.btn::after{
+        margin-left:.35em;
+      }
       .topnav .menu{ position:static; box-shadow:none; border:0; padding:4px 0; }
       .topnav .menu a{ padding:10px; }
     }
@@ -1042,7 +1063,8 @@
 
         // close after clicking any link or the Courses summary
         topnav.addEventListener('click', (e) => {
-          if (e.target.closest('a, summary')){
+          const link = e.target.closest('a');
+          if (link){
             header.classList.remove('is-open');
             toggle.setAttribute('aria-expanded', 'false');
           }
