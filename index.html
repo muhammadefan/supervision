@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Supervision — English Learning</title>
+  <!-- Favicon -->
+  <link rel="icon" href="logo-2.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Outfit:wght@600;700;800&family=Manrope:wght@600;700;800&family=Sora:wght@600;700;800&family=DM+Sans:wght@600;700&display=swap" rel="stylesheet">
   <!-- <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet"> -->
@@ -44,6 +46,69 @@
       max-width: 1200px; margin: 0 auto; padding: 3px 13px;
       display:flex; align-items:center; gap:16px;
     }
+
+    /* ---------- Mobile nav ---------- */
+    .nav-toggle{
+      display:none;               /* desktop hidden */
+      background:transparent; border:0; padding:8px; margin-left:auto;
+      cursor:pointer; border-radius:10px;
+    }
+    .nav-toggle .bar{
+      display:block; width:22px; height:2px; background:#0f172a; margin:5px 0; transition:.2s;
+    }
+
+    /* desktop layout stays as-is */
+    .topnav{ display:flex; gap:14px; align-items:center; }
+
+    /* phones / small tablets */
+    @media (max-width: 768px){
+      body{ padding-top: 58px; }                    /* shorter fixed bar */
+      .nav-inner{ padding: 8px 12px; gap:10px; }
+      .logo .logo-icon{ width:2.6em; height:2.6em; }
+      .logo .logotext{ font-size: clamp(18px,5vw,24px); }
+      .logo .tagline{ display:none; }               /* save space on phones */
+
+      .nav-toggle{ display:inline-block; }          /* show hamburger */
+      .topnav{
+        position: fixed; left:0; right:0; top:56px; /* drops under bar */
+        display:none;                               /* hidden by default */
+        background: rgba(255,255,255,.95);
+        -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+        border-bottom:1px solid var(--ring);
+        padding:10px 14px; gap:8px;
+        z-index:999;
+      }
+      .nav.is-open .topnav{ display:grid; }         /* open state */
+      .topnav .btn, .topnav summary.btn{
+        display:block; padding:12px 10px; border-radius:10px;
+      }
+      .topnav details.dropdown{ display:block; }    /* keep Courses */
+      .topnav .menu{ position:static; box-shadow:none; border:0; padding:4px 0; }
+      .topnav .menu a{ padding:10px; }
+    }
+
+    /* nicer hamburger X animation */
+    .nav.is-open .nav-toggle .bar:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+    .nav.is-open .nav-toggle .bar:nth-child(2){ opacity:0; }
+    .nav.is-open .nav-toggle .bar:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+    /* ---------- Content tweaks on small screens ---------- */
+    @media (max-width: 768px){
+      section{ padding:28px 16px; }
+      .achv-top{ gap:14px; }
+      .achv-item{ width:110px; }
+      .achv-item .label{ font-size:10px; }
+      .courses{ grid-template-columns: 1fr; }              /* stack */
+      .courses .left{ padding:18px; }
+      .chips{ grid-template-columns: 1fr; }                /* one per row */
+      .course-section .left .course-photo{ width:92%; }    /* bigger image */
+      .timeline{ grid-template-columns: 1fr; }             /* steps vertical */
+      .slide{ grid-template-columns: 1fr; }                /* review cards */
+    }
+
+    /* anchors compensate the fixed nav on all screens */
+    [id^="course-"], #howto, #faq, .course-section{ scroll-margin-top: 70px; }
+
     /* wrapper now holds icon + text */
     .logo{
       display: inline-flex;
@@ -399,8 +464,13 @@
           <span class="tagline">english course</span>
         </div>
       </div>
+
+      <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="topnav">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+
       <div class="spacer"></div>
-      <nav>
+      <nav id="topnav" class="topnav">
         <!-- <a class="btn" href="#courses">Courses</a> -->
         <details class="dropdown">
             <summary class="btn">Courses</summary>
@@ -955,6 +1025,28 @@
       // If the page loads with a hash, center that section too
       if (location.hash) {
         setTimeout(() => scrollToCenter(location.hash), 0);
+      }
+    });
+
+    // Mobile menu toggle
+    document.addEventListener('DOMContentLoaded', () => {
+      const header = document.querySelector('.nav');
+      const toggle = document.querySelector('.nav-toggle');
+      const topnav = document.getElementById('topnav');
+
+      if (toggle && header && topnav){
+        toggle.addEventListener('click', () => {
+          const open = header.classList.toggle('is-open');
+          toggle.setAttribute('aria-expanded', open);
+        });
+
+        // close after clicking any link or the Courses summary
+        topnav.addEventListener('click', (e) => {
+          if (e.target.closest('a, summary')){
+            header.classList.remove('is-open');
+            toggle.setAttribute('aria-expanded', 'false');
+          }
+        });
       }
     });
 
