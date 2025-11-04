@@ -171,7 +171,7 @@ body{
   vertical-align:middle;   /* align with neighboring buttons */
   line-height:1.2;         /* match link height */
 }
-.nav .btn:hover{ background:#fff; border-color:var(--ring); box-shadow:var(--shadow); }
+.nav .btn:hover{ background:#fff; border-color:transparent; box-shadow:var(--shadow); }
 .nav .btn.cta{ background:var(--primary); color:#fff; }
 .nav .btn.cta:hover{ transform: translateY(-1px); }
 
@@ -187,6 +187,11 @@ body{
 .nav details.dropdown > summary.btn{ list-style:none; cursor:pointer; }
 .nav details.dropdown > summary.btn::-webkit-details-marker{ display:none; }
 .nav details.dropdown > summary.btn::after{ content:" ▾"; font-weight:400; }
+.nav details.dropdown > summary.btn:hover {
+  background: #fff;
+  border-color: transparent; /* Remove border completely */
+  box-shadow: var(--shadow);
+}
 .nav details.dropdown[open]{ z-index:1100; }
 .nav details.dropdown .menu{
     position:absolute; right:0; top:calc(100% + 8px); min-width:200px;
