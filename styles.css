@@ -5,7 +5,7 @@
   --accent:#10b981;  /* emerald */
   --white:#ffffff;
   --card:#ffffffcc;
-  --ring:#e2e8f0;    /* slate-200 */
+  /* --ring:#e2e8f0; */   /* slate-200 */
   --circle:#ffffff;
   --shadow: 0 10px 25px rgba(2,6,23,.08);
   --radius: 20px;
@@ -63,8 +63,7 @@ body{
     background: rgba(255,255,255,.95);
     -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
     border-bottom:1px solid var(--ring);
-    padding:10px 14px; gap:8px;
-    z-index:999;
+    padding:10px 14px; gap:8px; z-index:999;
   }
   .nav.is-open .topnav{ display:grid; }         /* open state */
   .topnav .btn, .topnav summary.btn{
@@ -75,7 +74,7 @@ body{
     display:block;
     padding:14px 0;           /* vertical spacing only */
   }
-  .topnav details.dropdown{ transform: none; display:block; padding-left: 1px;}    /* keep Courses */
+  .topnav details.dropdown{ transform: none; display:block; padding:1px 14px;}    /* keep Courses */
   /* FIX: remove summary's hidden-marker indent on mobile */
   .topnav details.dropdown > summary.btn{
     display:block;
@@ -152,7 +151,7 @@ body{
     grid-area: tagline;
     color: var(--muted);
     font-weight: 400;                          /* thinner than the wordmark */
-    font-size: clamp(10px, 1vw, 14px);       /* smaller text */
+    font-size: clamp(10px, 1vw, 12px);       /* smaller text */
     letter-spacing: .2px;
     margin-top: 2px;
     text-transform: lowercase;
@@ -262,11 +261,17 @@ animation: waveUp 600ms ease-out forwards; /* <-- forwards keeps 100% state */
 .courses .left{ background:#fff; border-radius: var(--radius); padding:28px; border:1px solid var(--ring); box-shadow: var(--shadow); }
 .chips{ display:grid; gap:14px; }
 .chip{
-  padding:18px 16px; border-radius:16px; color:#0b1220; font-weight:600; border:1px solid var(--ring);
-  background:#e0fbeb; /* default */
+  padding:18px 16px; border-radius:16px; color:#0b1220; font-weight:600; border:3px solid #e0fbeb;
+  background:#ffffff; /* default */
 }
-.chip:nth-child(2){ background:#e1effe; }
-.chip:nth-child(3){ background:#fdecc8; }
+.chip:nth-child(2){ background:#ffffff; border: 3px solid #e1effe;}
+.chip:nth-child(3){ background:#ffffff; border: 3px solid #fdecc8;}
+
+/* 
+#e0fbeb
+#e1effe
+#fdecc8 
+*/
 
 /* Image below the description inside course cards */
 .course-section .left .course-photo{
